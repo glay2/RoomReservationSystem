@@ -1,0 +1,12 @@
+<?php
+// config/db.custom.php.example
+// Instructions for InfinityFree:
+// 1. Copy or rename this file to 'db.custom.php' in the config/ directory.
+// 2. Open your InfinityFree Control Panel (vPanel) -> MySQL Databases.
+// 3. Fill in the values below:
+
+define('DB_HOST', 'sqlxxx.infinityfree.com');                   // MySQL Host Name (e.g. sql100.infinityfree.com)
+define('DB_PORT', '3306');                                     // MySQL Port (typically 3306)
+define('DB_NAME', 'epiz_xxxxxxx_room_reservation_system');     // Database Name (e.g. epiz_12345678_room_reservation)
+define('DB_USER', 'epiz_xxxxxxx');                             // MySQL User Name (e.g. epiz_12345678)
+define('DB_PASS', 'your_vpanel_account_password');             // vPanel Account Password

@@ -1,0 +1,14 @@
+# Room Reservation System - Apache / InfinityFree Configuration
+DirectoryIndex index.php index.html
+
+# Prevent directory browsing
+Options -Indexes
+
+# Set default charset
+AddDefaultCharset UTF-8
+
+# Security: Deny public access to sensitive files
+<FilesMatch "(^\.env|\.git|\.sql|\.example)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

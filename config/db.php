@@ -1,11 +1,16 @@
 <?php
 // config/db.php - Database connection & Core Utility Helpers
 
-define('DB_HOST', '127.0.0.1');
-define('DB_PORT', '3306');
-define('DB_NAME', 'room_reservation_system');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+// Optional custom database config override (e.g. for InfinityFree or production)
+if (file_exists(__DIR__ . '/db.custom.php')) {
+    require_once __DIR__ . '/db.custom.php';
+}
+
+if (!defined('DB_HOST')) define('DB_HOST', getenv('DB_HOST') ?: '127.0.0.1');
+if (!defined('DB_PORT')) define('DB_PORT', getenv('DB_PORT') ?: '3306');
+if (!defined('DB_NAME')) define('DB_NAME', getenv('DB_NAME') ?: 'room_reservation_system');
+if (!defined('DB_USER')) define('DB_USER', getenv('DB_USER') ?: 'root');
+if (!defined('DB_PASS')) define('DB_PASS', getenv('DB_PASS') !== false ? getenv('DB_PASS') : '');
 
 function getDB() {
     static $pdo = null;

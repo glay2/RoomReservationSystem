@@ -1,23 +1,32 @@
 <?php
 // database/setup.php - Database installer and seed data reset tool
 
-$host = '127.0.0.1';
-$port = '3306';
-$user = 'root';
-$pass = '';
-$dbName = 'room_reservation_system';
+require_once __DIR__ . '/../config/db.php';
+
+$host = DB_HOST;
+$port = DB_PORT;
+$user = DB_USER;
+$pass = DB_PASS;
+$dbName = DB_NAME;
 
 $message = '';
 $error = '';
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' || php_sapi_name() === 'cli') {
     try {
-        $pdo = new PDO("mysql:host=$host;port=$port", $user, $pass, [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-        ]);
-
-        $pdo->exec("CREATE DATABASE IF NOT EXISTS `$dbName` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-        $pdo->exec("USE `$dbName`;");
+        // Connect directly to the database (works on InfinityFree where DB is pre-created in vPanel)
+        try {
+            $pdo = new PDO("mysql:host=$host;port=$port;dbname=$dbName;charset=utf8mb4", $user, $pass, [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+            ]);
+        } catch (PDOException $e) {
+            // Fallback for brand-new local development environments
+            $pdo = new PDO("mysql:host=$host;port=$port", $user, $pass, [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+            ]);
+            $pdo->exec("CREATE DATABASE IF NOT EXISTS `$dbName` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
+            $pdo->exec("USE `$dbName`;");
+        }
 
         $sql = file_get_contents(__DIR__ . '/schema.sql');
         $pdo->exec($sql);
